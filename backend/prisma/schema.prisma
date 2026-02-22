@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id             String          @id @default(cuid())
+  email          String          @unique
+  password       String
+  name           String
+  role           String          @default("MEMBER")
+  country        String          @default("INDIA")
+  orders         Order[]
+  paymentMethods PaymentMethod[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Restaurant {
+  id        String     @id @default(cuid())
+  name      String
+  cuisine   String
+  country   String
+  imageUrl  String?
+  rating    Float      @default(4.0)
+  menuItems MenuItem[]
+  orders    Order[]
+  createdAt DateTime   @default(now())
+}
+
+model MenuItem {
+  id           String      @id @default(cuid())
+  name         String
+  description  String
+  price        Float
+  category     String
+  imageUrl     String?
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  orderItems   OrderItem[]
+}
+
+model Order {
+  id              String         @id @default(cuid())
+  user            User           @relation(fields: [userId], references: [id])
+  userId          String
+  restaurant      Restaurant     @relation(fields: [restaurantId], references: [id])
+  restaurantId    String
+  items           OrderItem[]
+  status          String         @default("PENDING")
+  totalAmount     Float          @default(0)
+  country         String
+  paymentMethod   PaymentMethod? @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model OrderItem {
+  id         String   @id @default(cuid())
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  menuItemId String
+  quantity   Int
+  price      Float
+}
+
+model PaymentMethod {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  type      String
+  last4     String?
+  cardBrand String?
+  upiId     String?
+  isDefault Boolean  @default(false)
+  orders    Order[]
+  createdAt DateTime @default(now())
+}

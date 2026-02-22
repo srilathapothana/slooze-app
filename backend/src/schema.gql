@@ -1,0 +1,99 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthPayload {
+  token: String!
+  user: UserType!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type MenuItemType {
+  category: String!
+  description: String!
+  id: ID!
+  imageUrl: String
+  name: String!
+  price: Float!
+  restaurantId: String!
+}
+
+type Mutation {
+  addPaymentMethod(cardBrand: String, last4: String, type: String!, upiId: String): PaymentMethodType!
+  cancelOrder(orderId: String!): OrderType!
+  checkout(orderId: String!, paymentMethodId: String!): OrderType!
+  createOrder(items: [OrderItemInput!]!, restaurantId: String!): OrderType!
+  deletePaymentMethod(id: String!): PaymentMethodType!
+  login(email: String!, password: String!): AuthPayload!
+  register(country: String! = "INDIA", email: String!, name: String!, password: String!, role: String! = "MEMBER"): AuthPayload!
+  setDefaultPaymentMethod(id: String!): PaymentMethodType!
+}
+
+input OrderItemInput {
+  menuItemId: String!
+  quantity: Int!
+}
+
+type OrderItemType {
+  id: ID!
+  menuItem: MenuItemType!
+  price: Float!
+  quantity: Int!
+}
+
+type OrderType {
+  country: String!
+  createdAt: DateTime!
+  id: ID!
+  items: [OrderItemType!]!
+  restaurantId: String!
+  status: String!
+  totalAmount: Float!
+  updatedAt: DateTime!
+  user: UserType!
+}
+
+type PaymentMethodType {
+  cardBrand: String
+  createdAt: DateTime!
+  id: ID!
+  isDefault: Boolean!
+  last4: String
+  type: String!
+  upiId: String
+  userId: String!
+}
+
+type Query {
+  allOrders: [OrderType!]!
+  me: UserType!
+  myOrders: [OrderType!]!
+  myPaymentMethods: [PaymentMethodType!]!
+  restaurant(id: ID!): RestaurantType
+  restaurants: [RestaurantType!]!
+  users: [UserType!]!
+}
+
+type RestaurantType {
+  country: String!
+  createdAt: DateTime!
+  cuisine: String!
+  id: ID!
+  imageUrl: String
+  menuItems: [MenuItemType!]!
+  name: String!
+  rating: Float!
+}
+
+type UserType {
+  country: String!
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  name: String!
+  role: String!
+}
