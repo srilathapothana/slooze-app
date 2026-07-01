@@ -101,8 +101,8 @@ export default function RestaurantsPage() {
   }
 
   const categories = selectedRestaurant
-    ? [...new Set(selectedRestaurant.menuItems.map((m: any) => m.category))]
-    : [];
+  ? Array.from(new Set(selectedRestaurant.menuItems.map((m: any) => m.category)))
+  : [];
 
   return (
     <div className="p-8 animate-fade-in">
