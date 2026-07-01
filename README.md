@@ -2,6 +2,9 @@
 
 A full-stack role-based food ordering application built for Nick Fury's team. The application demonstrates enterprise-level authentication, authorization, and country-based access control using modern web technologies.
 
+**🔗 Live App:** https://slooze-frontend-production.up.railway.app
+**🔗 GraphQL API:** https://slooze-backend-production-d101.up.railway.app/graphql
+
 ---
 
 ## ✨ Features
@@ -22,13 +25,13 @@ A full-stack role-based food ordering application built for Nick Fury's team. Th
 ## 👥 Demo Accounts
 
 | Character | Email | Role | Country |
-|-----------|-------|------|---------|
-| 👑 Nick Fury | nick.fury@shield.com | Admin | 🇮🇳 India |
-| 🦸 Captain Marvel | captain.marvel@shield.com | Manager | 🇮🇳 India |
-| 🛡 Captain America | captain.america@shield.com | Manager | 🇺🇸 America |
-| 💜 Thanos | thanos@shield.com | Member | 🇮🇳 India |
-| ⚡ Thor | thor@shield.com | Member | 🇮🇳 India |
-| 🤠 Travis | travis@shield.com | Member | 🇺🇸 America |
+|---|---|---|---|
+| 👑 Nick Fury | `nick.fury@shield.com` | Admin | 🇮🇳 India |
+| 🦸 Captain Marvel | `captain.marvel@shield.com` | Manager | 🇮🇳 India |
+| 🛡 Captain America | `captain.america@shield.com` | Manager | 🇺🇸 America |
+| 💜 Thanos | `thanos@shield.com` | Member | 🇮🇳 India |
+| ⚡ Thor | `thor@shield.com` | Member | 🇮🇳 India |
+| 🤠 Travis | `travis@shield.com` | Member | 🇺🇸 America |
 
 **Password for all accounts:** `password123`
 
@@ -37,7 +40,7 @@ A full-stack role-based food ordering application built for Nick Fury's team. Th
 ## 🔐 Role Permissions
 
 | Feature | Admin | Manager | Member |
-|---------|:-----:|:-------:|:------:|
+|---|:---:|:---:|:---:|
 | View Restaurants & Menus | ✅ | ✅ | ✅ |
 | Create Order | ✅ | ✅ | ✅ |
 | Checkout & Payment | ✅ | ✅ | ❌ |
@@ -49,35 +52,21 @@ A full-stack role-based food ordering application built for Nick Fury's team. Th
 ## 🌍 Country-Based Access (ReBAC)
 
 ### 🇮🇳 India
-Users:
-- Captain Marvel
-- Thanos
-- Thor
-
-Restaurants:
-- Spice Garden
-- Biryani House
-- Dosa Dhaba
+**Users:** Captain Marvel, Thanos, Thor
+**Restaurants:** Spice Garden, Biryani House, Dosa Dhaba
 
 ### 🇺🇸 America
-Users:
-- Captain America
-- Travis
-
-Restaurants:
-- Burger Bliss
-- Pizza Palace
-- Texas BBQ Co.
+**Users:** Captain America, Travis
+**Restaurants:** Burger Bliss, Pizza Palace, Texas BBQ Co.
 
 ### 👑 Admin
-
-Nick Fury has unrestricted access to all restaurants and application features.
+Nick Fury has unrestricted access to all restaurants and application features, across both countries.
 
 ---
 
 ## 🏗 Tech Stack
 
-### Backend
+**Backend**
 - NestJS
 - GraphQL (Code-First)
 - Prisma ORM
@@ -85,7 +74,7 @@ Nick Fury has unrestricted access to all restaurants and application features.
 - JWT Authentication
 - TypeScript
 
-### Frontend
+**Frontend**
 - Next.js 14
 - TypeScript
 - Tailwind CSS
@@ -95,12 +84,19 @@ Nick Fury has unrestricted access to all restaurants and application features.
 
 ## 🔧 Environment Variables
 
-Create a `.env` file inside the `backend` folder.
+**Backend** — create a `.env` file inside the `backend` folder:
 
 ```env
 DATABASE_URL="your_neon_postgresql_connection_string"
-
 JWT_SECRET="your-secret-key"
+FRONTEND_URL="http://localhost:3000"
+PORT=4000
+```
+
+**Frontend** — create a `.env.local` file inside the `frontend` folder:
+
+```env
+NEXT_PUBLIC_API_URL="http://localhost:4000/graphql"
 ```
 
 ---
@@ -118,23 +114,14 @@ npm --version    # 9+
 
 ```bash
 cd backend
-
 npm install
-
 npx prisma generate
-
 npx prisma migrate dev
-
 npx ts-node prisma/seed.ts
-
 npm run start:dev
 ```
 
-GraphQL Endpoint:
-
-```
-http://localhost:4000/graphql
-```
+GraphQL Endpoint: `http://localhost:4000/graphql`
 
 ### 2. Frontend
 
@@ -142,45 +129,23 @@ Open a new terminal.
 
 ```bash
 cd frontend
-
 npm install
-
 npm run dev
 ```
 
-Application:
-
-```
-http://localhost:3000
-```
+Application: `http://localhost:3000`
 
 ---
 
 ## 🗃 Mock Data
 
 ### 🇮🇳 India
-
-Restaurants:
-- Spice Garden
-- Biryani House
-- Dosa Dhaba
-
-Users:
-- Nick Fury
-- Captain Marvel
-- Thanos
-- Thor
+**Restaurants:** Spice Garden, Biryani House, Dosa Dhaba
+**Users:** Nick Fury, Captain Marvel, Thanos, Thor
 
 ### 🇺🇸 America
-
-Restaurants:
-- Burger Bliss
-- Pizza Palace
-- Texas BBQ Co.
-
-Users:
-- Captain America
-- Travis
+**Restaurants:** Burger Bliss, Pizza Palace, Texas BBQ Co.
+**Users:** Captain America, Travis
 
 ---
 
@@ -207,13 +172,25 @@ Slooze/
 
 ## 🚧 Deployment
 
-Deployment instructions will be added after hosting the application.
+Both services are deployed on **Railway** as a monorepo, with a **Neon PostgreSQL** database.
 
-Recommended Hosting:
+| Service | Platform | URL |
+|---|---|---|
+| Frontend | Railway | https://slooze-frontend-production.up.railway.app |
+| Backend (GraphQL) | Railway | https://slooze-backend-production-d101.up.railway.app/graphql |
+| Database | Neon PostgreSQL | — |
 
-- Frontend: Railway
-- Backend: Railway
-- Database: Neon PostgreSQL
+**Backend service settings**
+- Root Directory: *(repo root)*
+- Build Command: `npm install && cd backend && npx prisma generate && npm run build`
+- Start Command: `node backend/dist/src/main.js`
+- Environment Variables: `DATABASE_URL`, `JWT_SECRET`, `FRONTEND_URL`, `PORT`
+
+**Frontend service settings**
+- Root Directory: *(repo root)*
+- Build Command: `npm install && cd frontend && npm run build`
+- Start Command: `cd frontend && npm run start`
+- Environment Variables: `NEXT_PUBLIC_API_URL`, `PORT`
 
 ---
 
